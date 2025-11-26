@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useProductStore } from "../store/ProductStore";
 import "./scss/Payment.scss";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import Coupon from "../components/Coupon";
 import PaymentDelivery from "../components/PaymentDelivery";
@@ -47,11 +46,11 @@ const Payment = () => {
     //단독결제
     checkoutItems,
     saveOrder,
-    processPayment,
+    processPoint,
     resetPaymentState,
     onClearCart,
-
     hyphenphone,
+    resetCheckoutItems,
   } = useProductStore();
 
   const { user } = useAuthStore();
@@ -78,8 +77,8 @@ const Payment = () => {
   };
   const handleConfirm = () => {
     onAddOrder(); // 주문상품 저장 → orderList 업데이트
-    saveOrder(); // Firestore 저장 (optional)
-    processPayment(); // 결제 처리
+    saveOrder(); // 단독결제로직
+    processPoint(); // 포인트 처리
     if (checkoutItems.length === 0) {
       onClearCart(); // 장바구니 결제일 때만 비움
     }
@@ -87,16 +86,13 @@ const Payment = () => {
     setShowComplete(true); // 완료 팝업 표시
   };
 
-  const { resetCheckoutItems } = useProductStore();
-
   useEffect(() => {
-    onAddOrder(); // 장바구니 결제일 때 orderList 저장
-  }, []);
+    onAddOrder(); // 처음 진입 시 주문상품 생성
 
-  useEffect(() => {
-    // 페이지 나갈 때 checkoutItems 초기화
-    return () => resetCheckoutItems();
-  }, []);
+    return () => {
+      resetCheckoutItems(); // 화면 닫히면 초기화
+    };
+  }, [onAddOrder, resetCheckoutItems]);
 
   return (
     <div className="checkout-wrap">

@@ -106,7 +106,7 @@
     color: g.$text10;
     width: 100%;
     padding: 12px 0;
-    border: none;
+    border: 1px solid g.$text4;
     border-radius: 4px;
     outline: none;
     appearance: none; //브라우저 기본 스타일 제거
@@ -116,5 +116,6 @@
   button:hover {
     background: g.$text1;
     color: g.$text10;
+    border: 1px solid g.$text1;
   }
 }
