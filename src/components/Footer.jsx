@@ -3,6 +3,27 @@ import "./scss/Footer1.scss";
 import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const goInsta = () => {
+    window.open(
+      "https://www.instagram.com/jacksonchameleon/",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+  const goFacebook = () => {
+    window.open(
+      "https://www.facebook.com/jacksonchameleon",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+  const goYoutube = () => {
+    window.open(
+      "https://www.youtube.com/channel/UCkIzmpE0AW8En-UateIiQ0A",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
   const navigate = useNavigate();
   const handleGoChatbot = () => {
     navigate("/community/customer");
@@ -21,16 +42,15 @@ const Footer = () => {
                 <img src="/images/logo.png" alt="footer-logo" />
               </h1>
               <div className="icon-wrap">
-                <p>
+                <p onClick={goFacebook}>
                   <img src="/images/icon-facebook.png" alt="facebook" />
                 </p>
-                <p>
+
+                <p onClick={goInsta}>
                   <img src="/images/icon-insta.png" alt="instagram" />
                 </p>
-                <p>
-                  <img src="/images/icon-x.png" alt="x" />
-                </p>
-                <p>
+
+                <p onClick={goYoutube}>
                   <img src="/images/icon-youtube.png" alt="youtube" />
                 </p>
               </div>
