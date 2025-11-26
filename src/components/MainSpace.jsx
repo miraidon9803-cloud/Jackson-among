@@ -51,13 +51,10 @@ const MainSpace = () => {
             <img src="/images/Space5.png" />
           </SwiperSlide>
           <SwiperSlide>
+            <img src="/images/Space6.png" />
+          </SwiperSlide>
+          <SwiperSlide>
             <img src="/images/Space7.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="/images/Space8.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="/images/Space9.png" />
           </SwiperSlide>
         </Swiper>
       </div>
