@@ -177,7 +177,7 @@ const Header = () => {
           )}
 
           <li className="cart">
-            <Link to="/Shoppingcart">
+            <Link to="/shoppingcart">
               <img src="/images/shopping-bag-icon.png" alt="bag" />
               <span className="cart-num">{cartCount}</span>
             </Link>

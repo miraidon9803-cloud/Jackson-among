@@ -307,7 +307,7 @@ const ShopDetailTop = () => {
           <div className="detail-bottom">
             <div className="bottom-left">
               {selectedList.length === 0 ? (
-                <p className="empty">옵션을 선택해주세요.</p>
+                <p className="empty"></p>
               ) : (
                 selectedList.map((sel, idx) => (
                   <div className="selected-box" key={idx}>

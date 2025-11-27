@@ -48,7 +48,6 @@ import NoticeId from "./components/NoticeId";
 import NoticePage from "./pages/NoticePage";
 import AboutStoryDetail from "./components/AboutStoryDetail";
 
-
 function App() {
   const initAuth = useAuthStore((state) => state.initAuth);
   useEffect(() => {
@@ -73,7 +72,6 @@ function App() {
         <Route path="/collections/round" element={<RoundCollection />} />
         <Route path="/collections/plato" element={<PlatoCollection />} />
         <Route path="/collections" element={<Collections />} />
-
 
         <Route path="/service" element={<Service />} />
         <Route path="/service/sample" element={<Sample />} />
