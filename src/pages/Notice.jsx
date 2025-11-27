@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Noticedata } from "../data/Notice";
-import './scss/Notice.scss'
+import "./scss/Notice.scss";
 import { Link } from "react-router-dom";
 
 const Notice = () => {
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(Noticedata.length / itemsPerPage);
@@ -21,7 +21,6 @@ const Notice = () => {
       <div className="inner">
         <h2>NOTICE</h2>
         <div className="notice-list-wrap">
-
           {currentItems.map((item, index) => {
             const realIndex = startIndex + index;
 
@@ -44,10 +43,12 @@ const Notice = () => {
             );
           })}
 
-          <div className="pagination">   
+          <div className="pagination">
             <button
               className="nav-btn prev"
-              onClick={() => currentPage > 1 && handlePageClick(currentPage - 1)}
+              onClick={() =>
+                currentPage > 1 && handlePageClick(currentPage - 1)
+              }
             >
               <img src="/images/arrow-left.png" alt="이전" />
             </button>
@@ -64,11 +65,12 @@ const Notice = () => {
 
             <button
               className="nav-btn next"
-              onClick={() => currentPage < totalPages && handlePageClick(currentPage + 1)}
+              onClick={() =>
+                currentPage < totalPages && handlePageClick(currentPage + 1)
+              }
             >
               <img src="/images/arrow-right.png" alt="다음" />
             </button>
-
           </div>
         </div>
       </div>
