@@ -6,7 +6,6 @@ import Layout from "./components/Layout";
 import MyPage from "./pages/MyPage";
 import Map from "./pages/Map";
 
-import CareService from "./pages/CareService";
 import CS from "./pages/CS";
 import Main from "./pages/Main";
 import Notice from "./pages/Notice";
@@ -95,7 +94,7 @@ function App() {
         <Route path="/samplingservice" element={<SamplingService />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/community/store" element={<Map />} />
-        <Route path="/careservice" element={<CareService />} />
+
         <Route path="/cs" element={<CS />} />
         <Route path="/community/notice" element={<Notice />} />
         {/* <Route path="/noticedetails" element={<NoticeDetails />} /> */}

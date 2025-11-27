@@ -1,8 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./scss/Community1.scss";
 
 const Community = () => {
+  const navigate = useNavigate();
+  const handleGoMap = () => {
+    navigate("/community/store");
+    window.scrollTo(0, 0);
+  };
   return (
     <section className="community-wrap">
       <div className="inner">
@@ -33,15 +38,13 @@ const Community = () => {
             <img src="./images/logo2.png" alt="Jackson chameleon" />
           </div>
 
-          <div className="com-card com-store">
-            <Link to="/community/store">
-              <div className="com-text">Store</div>
-              <img
-                src="./images/store_bg.png"
-                alt="Store"
-                className="community"
-              />
-            </Link>
+          <div onClick={handleGoMap} className="com-card com-store">
+            <div className="com-text">Store</div>
+            <img
+              src="./images/store_bg.png"
+              alt="Store"
+              className="community"
+            />
           </div>
         </div>
       </div>
