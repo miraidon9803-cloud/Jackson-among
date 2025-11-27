@@ -130,7 +130,11 @@ const Search = () => {
 
         <div className="product-list">
           {currentItem.map((item) => (
-            <Link to={`/shop/${item.id}`} className="product" key={item.id}>
+            <Link
+              to={`/shop/product/${item.id}`}
+              className="product"
+              key={item.id}
+            >
               <span className="new">{item.badges}</span>
               <div className="img-box">
                 <p className="default-img">

@@ -31,7 +31,7 @@ const Main = () => {
         {isVisibleMainpopup && (
           <div className="main-popup">
             <p>
-              다양한 커스텀이 가능한 잭슨파멜레온을 만나보세요
+              다양한 커스텀이 가능한 잭슨카멜레온을 만나보세요
               <span onClick={handleClosePopup}>
                 <img src="./images/cancel.png" alt="" />
               </span>
