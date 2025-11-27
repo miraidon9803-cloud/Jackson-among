@@ -12,7 +12,7 @@ const menus = [
       { key: "all", label: "All" },
       {
         key: "sofa",
-        label: "Sofas",
+        label: "Sofa",
         sub: [
           { key: "Fabric", label: "Sofas/Fabric" },
           { key: "Leather", label: "Sofas/Leather" },
@@ -20,7 +20,7 @@ const menus = [
       },
       {
         key: "table",
-        label: "Tables",
+        label: "Table",
         sub: [
           { key: "Dining", label: "Tables/Dining" },
           { key: "Side", label: "Tables/Side" },
@@ -29,7 +29,7 @@ const menus = [
       },
       {
         key: "chair",
-        label: "Chairs",
+        label: "Chair",
         sub: [
           { key: "Dining", label: "Chairs/Dining" },
           { key: "Lounge", label: "Chairs/Lounge" },
