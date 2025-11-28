@@ -1,16 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
-import './scss/ShopDetailBottomReview.scss'
-import { useParams } from 'react-router-dom'
-import { useProductStore } from '../store/ProductStore'
+import React, { useEffect, useRef, useState } from "react";
+import "./scss/ShopDetailBottomReview.scss";
+import { useParams } from "react-router-dom";
+import { useProductStore } from "../store/ProductStore";
 
 const ShopDetailBottomReview = () => {
-
   const total = [
     { title: "디자인", score: 100 },
     { title: "제품 품질", score: 90 },
     { title: "제품 기능", score: 90 },
-    { title: "제품 만족도", score: 80 }
-  ]
+    { title: "제품 만족도", score: 80 },
+  ];
 
   const { id } = useParams();
   const { items, onFetchItems } = useProductStore();
@@ -47,7 +46,6 @@ const ShopDetailBottomReview = () => {
     setOverflowList([...overflowList]);
   }, [product]);
 
-
   const animateItem = (idx, open) => {
     const item = itemRefs.current[idx];
     const box = boxRefs.current[idx];
@@ -59,20 +57,19 @@ const ShopDetailBottomReview = () => {
 
     const boxFull = box.scrollHeight;
 
-    item.style.height = itemStart + 'px';
-    box.style.height = boxStart + 'px';
+    item.style.height = itemStart + "px";
+    box.style.height = boxStart + "px";
 
     requestAnimationFrame(() => {
       if (open) {
-        item.style.height = itemStart + (boxFull - boxStart) + 40 + 'px';
-        box.style.height = boxFull + 'px';
+        item.style.height = itemStart + (boxFull - boxStart) + 40 + "px";
+        box.style.height = boxFull + "px";
       } else {
-        item.style.height = '320px';
-        box.style.height = '246px';
+        item.style.height = "320px";
+        box.style.height = "246px";
       }
     });
   };
-
 
   const toggleReview = (idx) => {
     const newOpen = [...openList];
@@ -82,23 +79,27 @@ const ShopDetailBottomReview = () => {
     setOpenList(newOpen);
   };
 
-
   if (!product || !product.review) return null;
 
-
-
   return (
-    <div className='bottom-review-wrap'>
+    <div className="bottom-review-wrap">
       <div className="inner">
-
         <div className="total-wrap">
           <div className="total-top">
-            <p>리뷰<span>{reviewList.length}</span></p>
-            <button><img src="/images/review.png" alt="" />리뷰작성</button>
+            <p>
+              리뷰<span>{reviewList.length}</span>
+            </p>
+            <button>
+              <img src="/images/pen_icon.svg" alt="" />
+              리뷰작성
+            </button>
           </div>
 
           <div className="total">
-            <div className="total-left"><img src="/images/star.png" alt="" />4.9</div>
+            <div className="total-left">
+              <img src="/images/star.png" alt="" />
+              4.9
+            </div>
             <div className="total-right">
               {total.map((item) => (
                 <div key={item.title}>
@@ -110,7 +111,6 @@ const ShopDetailBottomReview = () => {
             </div>
           </div>
         </div>
-
 
         <div className="review-wrap">
           <div className="review-top"></div>
@@ -127,7 +127,7 @@ const ShopDetailBottomReview = () => {
                       <p>{rev.name}</p>
                       <p>{rev.star}</p>
                     </div>
-                    <p className='text-left-date'>{rev.date}</p>
+                    <p className="text-left-date">{rev.date}</p>
                   </div>
 
                   <div className="text-right">
@@ -140,13 +140,16 @@ const ShopDetailBottomReview = () => {
                     </div>
 
                     {overflowList[index] && (
-                      <button className='rev-more' onClick={() => toggleReview(index)}>
-                        <span>{openList[index] ? '접기' : '더보기'}</span>
-                        <span className='more'>
+                      <button
+                        className="rev-more"
+                        onClick={() => toggleReview(index)}
+                      >
+                        <span>{openList[index] ? "접기" : "더보기"}</span>
+                        <span className="more">
                           <img
                             src="/images/Arrow-down.png"
                             alt="더보기"
-                            className={openList[index] ? 'rotate' : ''}
+                            className={openList[index] ? "rotate" : ""}
                           />
                         </span>
                       </button>
@@ -159,12 +162,10 @@ const ShopDetailBottomReview = () => {
                     <img src={rev.img} alt={rev.name} />
                   </div>
                 )}
-
               </div>
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
