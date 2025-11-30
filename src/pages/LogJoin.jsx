@@ -50,6 +50,28 @@ export default function LogJoin() {
     }
   };
 
+  const handleGoogle = async (e)=>{
+    e.preventDefault();
+    try{
+      await onGoogleLogin();
+      navigate("/mypage");
+    } catch (err){
+      alert("로그인 실패: " + err.message);
+    }
+  };
+
+  
+  const handleKaKao = async (e)=>{
+    e.preventDefault();
+    try{
+      await onKakaoLogin();
+      navigate("/mypage");
+    } catch (err){
+      alert("로그인 실패: " + err.message);
+    }
+  };
+
+
   const openTermsPanel = () => {
     resetJoinForm();
     setPanel("terms");
@@ -143,7 +165,7 @@ export default function LogJoin() {
 
                 <button
                   type="button"
-                  onClick={onGoogleLogin}
+                  onClick={handleGoogle}
                   className="btn google"
                 >
                   <img src="/images/google.svg" alt="google" />
@@ -151,7 +173,7 @@ export default function LogJoin() {
                 </button>
                 <button
                   type="button"
-                  onClick={onKakaoLogin}
+                  onClick={handleKaKao}
                   className="btn kakao"
                 >
                   <img src="/images/kakao.svg" alt="kakao" />
