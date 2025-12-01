@@ -50,27 +50,25 @@ export default function LogJoin() {
     }
   };
 
-  const handleGoogle = async (e)=>{
+  const handleGoogle = async (e) => {
     e.preventDefault();
-    try{
+    try {
       await onGoogleLogin();
       navigate("/mypage");
-    } catch (err){
+    } catch (err) {
       alert("로그인 실패: " + err.message);
     }
   };
 
-  
-  const handleKaKao = async (e)=>{
+  const handleKaKao = async (e) => {
     e.preventDefault();
-    try{
+    try {
       await onKakaoLogin();
       navigate("/mypage");
-    } catch (err){
+    } catch (err) {
       alert("로그인 실패: " + err.message);
     }
   };
-
 
   const openTermsPanel = () => {
     resetJoinForm();
