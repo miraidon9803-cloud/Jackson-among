@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
 import { useAuthStore } from "../store/authStore";
@@ -7,7 +7,14 @@ import "./scss/Logjoin1.scss";
 
 export default function LogJoin() {
   const navigate = useNavigate();
-  const { onLogin, onGoogleLogin, onKakaoLogin, onMember } = useAuthStore();
+  const { onLogin, onGoogleLogin, onKakaoLogin, onMember, user } =
+    useAuthStore();
+  useEffect(() => {
+    if (user) {
+      // 이미 로그인 상태면 로그인 페이지 보여줄 필요 X
+      navigate("/mypage", { replace: true });
+    }
+  }, [user, navigate]);
 
   const {
     terms,
