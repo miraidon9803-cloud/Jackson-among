@@ -3,6 +3,7 @@ import "./scss/Map.scss";
 import Store from "./Store";
 
 const Map = () => {
+  const KAKAO_JS_KEY = process.env.REACT_APP_KAKAO_JS_KEY;
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
@@ -59,8 +60,7 @@ const Map = () => {
 
     // 처음 로드할 때: 스크립트 동적 추가
     const script = document.createElement("script");
-    script.src =
-      "https://dapi.kakao.com/v2/maps/sdk.js?appkey=b3fc478b356ae6fee151857a00679e07&autoload=false&libraries=services";
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false&libraries=services`;
     script.async = true;
     script.onload = () => {
       window.kakao.maps.load(initMap);

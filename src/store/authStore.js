@@ -2,16 +2,13 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut
+  signOut,
 } from "firebase/auth";
 import { create } from "zustand";
 import { auth, db, googleProvider } from "../firebase/firebase";
-import { doc, getDoc, setDoc,updateDoc} from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-
-
-
-
+const KAKAO_JS_KEY = process.env.REACT_APP_KAKAO_JS_KEY;
 export const useAuthStore = create((set) => ({
   //1. 상태변수
   user: null,
@@ -19,41 +16,45 @@ export const useAuthStore = create((set) => ({
   setIsJoin: (value) => set({ isJoin: value }),
 
   initAuth: () => {
-  onAuthStateChanged(auth, async (fbUser) => {
-    if (fbUser) {
-      const userRef = doc(db, "users", fbUser.uid);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        set({ user: userDoc.data() });
-      } else {
-        const basicUser = {
-          uid: fbUser.uid,
-          name: fbUser.displayName || "",
-          email: fbUser.email,
-          phone: fbUser.phoneNumber || "",
-          addnum: "",
-          address: "",
-          add: "",
-        };
+    onAuthStateChanged(auth, async (fbUser) => {
+      if (fbUser) {
+        const userRef = doc(db, "users", fbUser.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          set({ user: userDoc.data() });
+        } else {
+          const basicUser = {
+            uid: fbUser.uid,
+            name: fbUser.displayName || "",
+            email: fbUser.email,
+            phone: fbUser.phoneNumber || "",
+            addnum: "",
+            address: "",
+            add: "",
+          };
 
-        await setDoc(userRef, basicUser);
-        set({ user: basicUser });
+          await setDoc(userRef, basicUser);
+          set({ user: basicUser });
+        }
+      } else {
+        set({ user: null });
       }
-    } else {
-      set({ user: null });
-    }
-  });
-},
+    });
+  },
 
   //회원가입
-  onMember: async ({name, email, password, addnum, address, add, phone }) => {
+  onMember: async ({ name, email, password, addnum, address, add, phone }) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password,);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const fbUser = userCredential.user;
 
       const userData = {
         uid: fbUser.uid,
-        
+
         name: name || "",
         email,
         password,
@@ -76,26 +77,30 @@ export const useAuthStore = create((set) => ({
   },
 
   //로그인
-onLogin: async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const fbUser = userCredential.user;
+  onLogin: async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const fbUser = userCredential.user;
 
-    const userRef = doc(db, "users", fbUser.uid);
-    const userDoc = await getDoc(userRef);
+      const userRef = doc(db, "users", fbUser.uid);
+      const userDoc = await getDoc(userRef);
 
-    if (userDoc.exists()) {
-      set({ user: userDoc.data() });  // Firestore 값으로 저장 !!!
-    } else {
-      set({ user: fbUser });
+      if (userDoc.exists()) {
+        set({ user: userDoc.data() }); // Firestore 값으로 저장 !!!
+      } else {
+        set({ user: fbUser });
+      }
+
+      return fbUser;
+    } catch (err) {
+      console.log("로그인 실패:", err.message);
+      throw err;
     }
-
-    return fbUser;
-  } catch (err) {
-    console.log("로그인 실패:", err.message);
-    throw err;
-  }
-},
+  },
   onGoogleLogin: async () => {
     try {
       // 구글 로그인창을 띄워서 사용자로부터 로그인하게 라고 그 결과값 저장하기
@@ -104,10 +109,10 @@ onLogin: async (email, password) => {
       const user = result.user;
 
       // 그 정보를 데이터베이스에 저장하기
-      const userRef = doc(db, "users", user.uid)
+      const userRef = doc(db, "users", user.uid);
       // 이미지 회원인지 아닌지 체크하기
       const userDoc = await getDoc(userRef);
-      //데이터가 없으면 새로운 정보로 회원가입을하고 있으면, 
+      //데이터가 없으면 새로운 정보로 회원가입을하고 있으면,
       if (!userDoc.exists()) {
         const userInfo = {
           uid: user.uid,
@@ -116,17 +121,15 @@ onLogin: async (email, password) => {
           nickname: "",
           phone: user.phoneNumber,
           file: user.photoURL,
-          profile: ""
-        }
-        await setDoc(userRef, userInfo)
-        set({ user: userInfo })
-      }
-      else {
-        set({ user: userDoc.data() })
+          profile: "",
+        };
+        await setDoc(userRef, userInfo);
+        set({ user: userInfo });
+      } else {
+        set({ user: userDoc.data() });
       }
       // 정보를 불러오기
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err.message);
     }
   },
@@ -135,7 +138,7 @@ onLogin: async (email, password) => {
     try {
       // 1 카카오 SDK 초기화
       if (!window.Kakao.isInitialized()) {
-        window.Kakao.init("b3fc478b356ae6fee151857a00679e07");
+        window.Kakao.init(KAKAO_JS_KEY);
         console.log(" Kakao SDK 초기화 완료");
       }
 
@@ -151,8 +154,8 @@ onLogin: async (email, password) => {
 
       // 3 사용자 정보 요청 (Promise 기반)
       const res = await window.Kakao.API.request({
-        url: "/v2/user/me"
-      })
+        url: "/v2/user/me",
+      });
 
       console.log(" 카카오 사용자 정보:", res);
 
@@ -184,7 +187,6 @@ onLogin: async (email, password) => {
 
       alert(`${kakaoUser.nickname}님, 카카오 로그인 성공! `);
       if (navigate) navigate("/dashboard");
-
     } catch (err) {
       console.error(" 카카오 로그인 중 오류:", err);
       console.log("카카오 로그인 실패: " + err.message);
@@ -193,120 +195,114 @@ onLogin: async (email, password) => {
 
   //로그아웃
   onLogout: async () => {
-    await signOut(auth)
-    set({ user: null })
+    await signOut(auth);
+    set({ user: null });
   },
 
+  //마이페이지
+  updateUser: {
+    email: "",
+    password: "",
+    phone: "",
+    addnum: "",
+    address: "",
+    add: "",
+  },
 
-//마이페이지
- updateUser: {
-  email: "",
-  password: "",
-  phone: "",
-  addnum: "",
-  address: "",
-  add: "",
-},
+  // 초기값 설정
+  setUpdateUser: (data) =>
+    set({
+      updateUser: {
+        email: data.email || "",
+        password: data.password || "",
+        phone: data.phone || "",
+        addnum: data.addnum || "",
+        address: data.address || "",
+        add: data.add || "",
+      },
+    }),
 
-// 초기값 설정
-setUpdateUser: (data) =>
-  set({
-    updateUser: {
-      email: data.email || "",
-      password: data.password || "",
-      phone: data.phone || "",
-      addnum: data.addnum || "",
-      address: data.address || "",
-      add: data.add || "",
-    },
-  }),
+  // 개별 필드 업데이트
+  updateUserField: (key, value) =>
+    set((state) => ({
+      updateUser: {
+        ...state.updateUser,
+        [key]: value,
+      },
+    })),
 
-// 개별 필드 업데이트
-updateUserField: (key, value) =>
-  set((state) => ({
-    updateUser: {
-      ...state.updateUser,
-      [key]: value,
-    },
-  })),
+  // 주소 업데이트
+  updateUserAddress: (zonecode, address) =>
+    set((state) => ({
+      updateUser: {
+        ...state.updateUser,
+        addnum: zonecode,
+        address: address,
+      },
+    })),
 
-// 주소 업데이트
-updateUserAddress: (zonecode, address) =>
-  set((state) => ({
-    updateUser: {
-      ...state.updateUser,
-      addnum: zonecode,
-      address: address,
-    },
-  })),
+  updateUserinfo: async () => {
+    try {
+      const { user, updateUser } = useAuthStore.getState();
 
- updateUserinfo: async () => {
-  try {
-    const { user, updateUser } = useAuthStore.getState();
+      if (!user) return alert("로그인이 필요합니다.");
 
-    if (!user) return alert("로그인이 필요합니다.");
+      const userRef = doc(db, "users", user.uid);
 
-    const userRef = doc(db, "users", user.uid);
-
-    await updateDoc(userRef, {
-      email: updateUser.email,
-      phone: updateUser.phone,
-      addnum: updateUser.addnum,
-      address: updateUser.address,
-      add: updateUser.add,
-    });
-
-    // 화면에 user 상태도 바로 반영
-    useAuthStore.setState({
-      user: {
-        ...user,
+      await updateDoc(userRef, {
         email: updateUser.email,
         phone: updateUser.phone,
         addnum: updateUser.addnum,
         address: updateUser.address,
         add: updateUser.add,
-      }
-    });
+      });
 
-    alert("회원 정보가 수정되었습니다!");
+      // 화면에 user 상태도 바로 반영
+      useAuthStore.setState({
+        user: {
+          ...user,
+          email: updateUser.email,
+          phone: updateUser.phone,
+          addnum: updateUser.addnum,
+          address: updateUser.address,
+          add: updateUser.add,
+        },
+      });
 
-  } catch (err) {
-    console.error("회원정보 수정 오류:", err);
-    alert("회원정보 수정 중 오류가 발생했습니다.");
-  }
-},
-updateAddressinfo: async () => {
-  try {
-    const { user, updateUser } = useAuthStore.getState();
+      alert("회원 정보가 수정되었습니다!");
+    } catch (err) {
+      console.error("회원정보 수정 오류:", err);
+      alert("회원정보 수정 중 오류가 발생했습니다.");
+    }
+  },
+  updateAddressinfo: async () => {
+    try {
+      const { user, updateUser } = useAuthStore.getState();
 
-    if (!user) return alert("로그인이 필요합니다.");
+      if (!user) return alert("로그인이 필요합니다.");
 
-    const userRef = doc(db, "users", user.uid);
+      const userRef = doc(db, "users", user.uid);
 
-    await updateDoc(userRef, {
-      addnum: updateUser.addnum,
-      address: updateUser.address,
-      add: updateUser.add,
-    });
-
-    // 화면 상태 업데이트
-    useAuthStore.setState({
-      user: {
-        ...user,
+      await updateDoc(userRef, {
         addnum: updateUser.addnum,
         address: updateUser.address,
         add: updateUser.add,
-      }
-    });
+      });
 
-    alert("배송 주소가 수정되었습니다!");
+      // 화면 상태 업데이트
+      useAuthStore.setState({
+        user: {
+          ...user,
+          addnum: updateUser.addnum,
+          address: updateUser.address,
+          add: updateUser.add,
+        },
+      });
 
-  } catch (err) {
-    console.error("주소 수정 오류:", err);
-    alert("주소 수정 중 오류가 발생했습니다.");
-  }
-},
-
-}))
-
-
+      alert("배송 주소가 수정되었습니다!");
+    } catch (err) {
+      console.error("주소 수정 오류:", err);
+      alert("주소 수정 중 오류가 발생했습니다.");
+    }
+  },
+}));
