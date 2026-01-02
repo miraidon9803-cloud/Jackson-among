@@ -163,9 +163,9 @@ export default function LogJoin() {
 
               <div className="social-login">
                 <div className="text-box">
-                  <img src="/images/line.svg" alt="line" />
+                  <img src="/images/line1.svg" alt="line" />
                   <h2>SNS 간편로그인</h2>
-                  <img src="/images/line.svg" alt="line" />
+                  <img src="/images/line1.svg" alt="line" />
                 </div>
 
                 <button

@@ -1,27 +1,20 @@
-import React, { useState } from 'react'
-import { storeData } from '../data/store'
-import './scss/Store.scss'
-
+import React, { useState } from "react";
+import { storeData } from "../data/store";
+import "./scss/Store.scss";
 
 const Store = ({ moveToStore }) => {
-
-  const [activeTab, setActiveTab] = useState('연남');
+  const [activeTab, setActiveTab] = useState("연남");
   const [openIndex, setOpenIndex] = useState(null);
 
-
   const getFilteredStores = () => {
-    if (activeTab === '연남') {
-      return storeData.filter(store =>
-        store.title.includes('하우스 오브')
+    if (activeTab === "연남") {
+      return storeData.filter((store) => store.title.includes("하우스 오브"));
+    } else if (activeTab === "판교") {
+      return storeData.filter((store) =>
+        store.title.includes("현대백화점 판교")
       );
-    } else if (activeTab === '판교') {
-      return storeData.filter(store =>
-        store.title.includes('현대백화점 판교')
-      );
-    } else if (activeTab === '무브먼트랩') {
-      return storeData.filter(store =>
-        store.title.includes('무브먼트랩')
-      );
+    } else if (activeTab === "무브먼트랩") {
+      return storeData.filter((store) => store.title.includes("무브먼트랩"));
     } else {
       return storeData;
     }
@@ -30,12 +23,9 @@ const Store = ({ moveToStore }) => {
   const filteredStores = getFilteredStores();
 
   const toggleStore = (index) => {
-    if (activeTab !== '무브먼트랩') return;
+    if (activeTab !== "무브먼트랩") return;
     setOpenIndex(openIndex === index ? null : index);
   };
-
-
-
 
   return (
     <section className="store-wrap">
@@ -43,49 +33,64 @@ const Store = ({ moveToStore }) => {
         <div className="store-tap-wrap">
           <div className="store-tabs">
             <button
-              className={`tab-button ${activeTab === '연남' ? 'active' : ''}`}
-              onClick={() => setActiveTab('연남')}
+              className={`tab-button ${activeTab === "연남" ? "active" : ""}`}
+              onClick={() => setActiveTab("연남")}
             >
               연남
             </button>
             <button
-              className={`tab-button ${activeTab === '판교' ? 'active' : ''}`}
-              onClick={() => setActiveTab('판교')}
+              className={`tab-button ${activeTab === "판교" ? "active" : ""}`}
+              onClick={() => setActiveTab("판교")}
             >
               판교
             </button>
             <button
-              className={`tab-button ${activeTab === '무브먼트랩' ? 'active' : ''}`}
-              onClick={() => setActiveTab('무브먼트랩')}
+              className={`tab-button ${
+                activeTab === "무브먼트랩" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("무브먼트랩")}
             >
               무브먼트랩
             </button>
           </div>
         </div>
 
-        <div className={`store-list ${activeTab === '무브먼트랩' ? 'scroll-mode' : ''}`} >
+        <div
+          className={`store-list ${
+            activeTab === "무브먼트랩" ? "scroll-mode" : ""
+          }`}
+        >
           {filteredStores.map((store, index) => (
-            <div key={index} className={`store-card ${openIndex === index ? 'open' : ''}`}>
+            <div
+              key={index}
+              className={`store-card ${openIndex === index ? "open" : ""}`}
+            >
               <div
                 className="store-header"
                 onClick={() => {
                   toggleStore(index);
 
-                  // ✅ 지도 이동 기능 (lat/lon 있는 경우에만)
-                  if (store.lat && store.lon && typeof moveToStore === "function") {
+                  //  지도 이동 기능 (lat/lon 있는 경우에만)
+                  if (
+                    store.lat &&
+                    store.lon &&
+                    typeof moveToStore === "function"
+                  ) {
                     moveToStore(store.lat, store.lon);
                   }
                 }}
               >
                 <div className="story-title-wrap">
                   <h3 className="store-title">{store.title}</h3>
-                  <p><img className="store-arrow" src={store.img_up} alt="" /></p>
+                  <p>
+                    <img className="store-arrow" src={store.img_up} alt="" />
+                  </p>
                 </div>
 
                 <p className="store-subtitle">{store.title_sub}</p>
               </div>
 
-              {(activeTab !== '무브먼트랩' || openIndex === index) && (
+              {(activeTab !== "무브먼트랩" || openIndex === index) && (
                 <div className="store-content">
                   <div className="store-info">
                     <div className="info-row">
@@ -120,7 +125,7 @@ const Store = ({ moveToStore }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Store
+export default Store;
